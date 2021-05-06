@@ -11,9 +11,12 @@ interface TodayDatabaseDao {
     @Update
     suspend fun update(today: TodayWeight)
 
-    @Query("SELECT * FROM today_data_table ORDER BY id")
+    @Query("SELECT * FROM today_data_table ORDER BY id DESC")
     fun getAllWeight(): LiveData<List<TodayWeight>>
 
     @Query("SELECT * FROM today_data_table ORDER BY id DESC LIMIT 1")
     suspend fun getToday(): TodayWeight?
+
+    @Query("DELETE FROM today_data_table")
+    suspend fun clear()
 }

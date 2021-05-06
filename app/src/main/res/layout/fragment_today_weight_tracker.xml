@@ -19,6 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@drawable/input_background"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             app:layout_constraintBottom_toTopOf="@id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,10 +32,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="70dp"
                 android:backgroundTint="#ffffff"
+                android:cursorVisible="false"
                 android:ems="10"
                 android:gravity="center"
                 android:hint="input your data"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:text="@={todayWeightViewModel.inputWeight}"
                 android:textColor="#EAEAEA"
                 android:textColorHint="#EAEAEA"
@@ -42,17 +45,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/enter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Enter"
-                android:onClick="@{() -> todayWeightViewModel.afterInput()}"
-                android:textColor="#EAEAEA"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@id/editText"
-                app:layout_constraintStart_toEndOf="@id/editText" />
+                android:paddingHorizontal="15dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="10dp"
+                android:src="@drawable/ic_baseline_keyboard_return_24"
+                app:layout_constraintStart_toEndOf="@+id/editText"
+                app:layout_constraintTop_toTopOf="@id/editText" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> todayWeightViewModel.onClear()}"
+                android:padding="15dp"
+                android:src="@drawable/ic_baseline_delete_outline_24"
+                android:text="clear"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -75,7 +87,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{todayWeightViewModel.weightString}"/>
+                android:text="@{todayWeightViewModel.weightString}" />
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

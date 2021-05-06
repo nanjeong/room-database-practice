@@ -1,9 +1,12 @@
 package com.example.myapplicationtracker
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -34,6 +37,15 @@ class TodayWeightFragment : Fragment() {
         binding.todayWeightViewModel = todayWeightViewModel
 
         binding.lifecycleOwner = this
+
+        binding.enter.setOnClickListener{
+            todayWeightViewModel.afterInput()
+
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view?.windowToken, 0)
+            it.clearFocus()
+        }
+
 
         return binding.root
     }

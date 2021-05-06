@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="todayWeightViewModel"
             type="com.example.myapplicationtracker.TodayWeightViewModel" />
@@ -33,6 +34,7 @@
                 android:gravity="center"
                 android:hint="input your data"
                 android:inputType="number"
+                android:text="@={todayWeightViewModel.inputWeight}"
                 android:textColor="#EAEAEA"
                 android:textColorHint="#EAEAEA"
                 android:textSize="18sp"
@@ -44,10 +46,11 @@
                 android:id="@+id/enter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:text="Enter"
+                android:onClick="@{() -> todayWeightViewModel.afterInput()}"
                 android:textColor="#EAEAEA"
                 android:textSize="18sp"
-                android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="@id/editText"
                 app:layout_constraintStart_toEndOf="@id/editText" />
 

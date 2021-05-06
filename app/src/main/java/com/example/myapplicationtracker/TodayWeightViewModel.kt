@@ -1,9 +1,10 @@
 package com.example.myapplicationtracker
 
+import android.annotation.SuppressLint
 import android.app.Application
-import android.text.Spanned
-import androidx.databinding.ObservableField
 import androidx.lifecycle.*
+import com.example.myapplicationtracker.db.TodayDatabaseDao
+import com.example.myapplicationtracker.db.TodayWeight
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -13,30 +14,13 @@ class TodayWeightViewModel(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private var todayWeight = MutableLiveData<TodayWeight>()
+    val inputWeight = MutableLiveData<String>()
 
-    init {
-        initializeTodayWeight()
-    }
-
-    private fun initializeTodayWeight() {
+    fun afterInput() {
         viewModelScope.launch {
-            todayWeight.value = getTodayWeightFromDatabase()
-        }
-    }
-
-    private suspend fun getTodayWeightFromDatabase(): TodayWeight? {
-        var weight = database.getToday()
-
-        return weight
-    }
-
-    fun afterInput(weight: String) {
-        viewModelScope.launch {
-            if (weight.isNotEmpty()) {
-                val newWeight = TodayWeight(weight = weight.toFloat())
+            if (inputWeight.value?.isNotEmpty() == true) {
+                val newWeight = TodayWeight(weight = inputWeight.value?.toFloat())
                 insert(newWeight)
-                todayWeight.value = getTodayWeightFromDatabase()
             }
         }
     }
@@ -46,10 +30,11 @@ class TodayWeightViewModel(
     }
 
     private val weights = database.getAllWeight()
-    val weightString = Transformations.map(weights) { weight ->
+    val weightString: LiveData<String> = Transformations.map(weights) { weight ->
         formatWeight(weight)
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun formatWeight(weight: List<TodayWeight>): String {
         val formatDate = SimpleDateFormat("yyyy/MM/dd")
         val sb = StringBuilder()

@@ -1,4 +1,4 @@
-package com.example.myapplicationtracker
+package com.example.myapplicationtracker.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

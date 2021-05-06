@@ -1,4 +1,4 @@
-package com.example.myapplicationtracker
+package com.example.myapplicationtracker.db
 
 import android.content.Context
 import androidx.room.Database

@@ -2,7 +2,6 @@ package com.example.myapplicationtracker
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.myapplicationtracker.db.TodayDatabaseDao
 import com.example.myapplicationtracker.db.TodayWeight
@@ -15,7 +14,7 @@ class TodayWeightViewModel(
     application: Application
 ) : AndroidViewModel(application) {
 
-    val inputWeight = MutableLiveData<String>()
+    var inputWeight = MutableLiveData<String>()
     private val todayWeight = MutableLiveData<TodayWeight>()
 
     init {
@@ -35,7 +34,8 @@ class TodayWeightViewModel(
     fun afterInput() {
         val newWeight = TodayWeight(weight = inputWeight.value?.toFloat())
         val newWeightDate = formatDate.format(newWeight.date)
-        val todayWeightDate = if (todayWeight.value != null) formatDate.format(todayWeight.value?.date) else ""
+        val todayWeightDate =
+            if (todayWeight.value != null) formatDate.format(todayWeight.value?.date) else ""
 
         viewModelScope.launch {
             if (inputWeight.value?.isNotEmpty() == true) {
@@ -72,7 +72,7 @@ class TodayWeightViewModel(
         database.clear()
     }
 
-    private val weights = database.getAllWeight()
+    val weights = database.getAllWeight()
     val weightString: LiveData<String> = Transformations.map(weights) { weight ->
         formatWeight(weight)
     }

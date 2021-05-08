@@ -75,19 +75,14 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="200dp" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:padding="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/weight_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline">
+            app:layout_constraintTop_toBottomOf="@id/guideline" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{todayWeightViewModel.weightString}" />
-        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

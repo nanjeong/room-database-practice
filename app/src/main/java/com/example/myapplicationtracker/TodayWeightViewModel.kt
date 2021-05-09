@@ -1,6 +1,5 @@
 package com.example.myapplicationtracker
 
-import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.myapplicationtracker.db.TodayDatabaseDao
@@ -30,6 +29,8 @@ class TodayWeightViewModel(
     private suspend fun getTodayWeight(): TodayWeight? {
         return database.getToday()
     }
+
+    private val formatDate = SimpleDateFormat("yyyy/MM/dd")
 
     fun afterInput() {
         val newWeight = TodayWeight(weight = inputWeight.value?.toFloat())
@@ -73,23 +74,4 @@ class TodayWeightViewModel(
     }
 
     val weights = database.getAllWeight()
-    val weightString: LiveData<String> = Transformations.map(weights) { weight ->
-        formatWeight(weight)
-    }
-
-    private val formatDate = SimpleDateFormat("yyyy/MM/dd")
-
-    @SuppressLint("SimpleDateFormat")
-    private fun formatWeight(weight: List<TodayWeight>): String {
-
-        val sb = StringBuilder()
-        sb.apply {
-            weight.forEach {
-                append(formatDate.format(Date(it.date)))
-                append(" ${it.weight}\n\n")
-            }
-        }
-        return sb.toString()
-    }
-
 }

@@ -1,40 +1,32 @@
 package com.example.myapplicationtracker
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplicationtracker.databinding.WeightItemViewBinding
 import com.example.myapplicationtracker.db.TodayWeight
 import java.text.SimpleDateFormat
 
-class TodayWeightAdapter : RecyclerView.Adapter<TodayWeightAdapter.ViewHolder>() {
-    class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class TodayWeightAdapter : ListAdapter<TodayWeight, TodayWeightAdapter.ViewHolder>(TodayWeightDiffCallback()) {
+
+    class ViewHolder private constructor(val binding: WeightItemViewBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: TodayWeight) {
+            binding.weightItem = item
+            binding.executePendingBindings()
+        }
+
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.weight_item_view, parent, false)
-                return ViewHolder(view)
+                val binding = WeightItemViewBinding.inflate(layoutInflater, parent, false)
+                return ViewHolder(binding)
             }
         }
-
-        val date: TextView = itemView.findViewById(R.id.date)
-        val weight: TextView = itemView.findViewById(R.id.weight)
-
-        fun bind(
-            item: TodayWeight
-        ) {
-            val formatDate = SimpleDateFormat("MM/dd")
-            date.text = formatDate.format(item.date)
-            weight.text = item.weight.toString()
-        }
     }
-
-    var data = listOf<TodayWeight>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -44,9 +36,18 @@ class TodayWeightAdapter : RecyclerView.Adapter<TodayWeightAdapter.ViewHolder>()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = data[position]
+        val item = getItem(position)
         holder.bind(item)
     }
+}
 
-    override fun getItemCount(): Int = data.size
+class TodayWeightDiffCallback: DiffUtil.ItemCallback<TodayWeight>() {
+    override fun areItemsTheSame(oldItem: TodayWeight, newItem: TodayWeight): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: TodayWeight, newItem: TodayWeight): Boolean {
+        return oldItem == newItem
+    }
+
 }

@@ -41,7 +41,7 @@ class TodayWeightFragment : Fragment() {
 
         todayWeightViewModel.weights.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.data = it
+                adapter.submitList(it)
             }
         })
 

@@ -1,18 +1,17 @@
-package com.example.myapplicationtracker
+package com.example.myapplicationtracker.detail
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplicationtracker.db.TodayDatabaseDao
 import java.lang.IllegalArgumentException
 
-class TodayWeightViewModelFactory(
+class DetailViewModelFactory(
+    private val weightKey: Long,
     private val dataSource: TodayDatabaseDao,
-    private val application: Application
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TodayWeightViewModel::class.java)) {
-            return TodayWeightViewModel(dataSource, application) as T
+        if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
+            return DetailViewModel(weightKey, dataSource) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

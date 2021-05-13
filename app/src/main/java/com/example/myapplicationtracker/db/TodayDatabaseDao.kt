@@ -17,6 +17,9 @@ interface TodayDatabaseDao {
     @Query("SELECT * FROM today_data_table ORDER BY id DESC LIMIT 1")
     suspend fun getToday(): TodayWeight?
 
+    @Query("SELECT * FROM today_data_table WHERE id = :key")
+    fun getWeightWithId(key: Long): LiveData<TodayWeight>
+
     @Query("DELETE FROM today_data_table")
     suspend fun clear()
 }

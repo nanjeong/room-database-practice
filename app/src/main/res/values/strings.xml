@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">My ApplicationTracker</string>
+    <string name="cheering_phrase">%s</string>
 </resources>

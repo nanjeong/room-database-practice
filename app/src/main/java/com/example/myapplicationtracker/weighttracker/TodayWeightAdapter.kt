@@ -2,20 +2,19 @@ package com.example.myapplicationtracker
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplicationtracker.databinding.WeightItemViewBinding
 import com.example.myapplicationtracker.db.TodayWeight
-import java.text.SimpleDateFormat
 
-class TodayWeightAdapter : ListAdapter<TodayWeight, TodayWeightAdapter.ViewHolder>(TodayWeightDiffCallback()) {
+class TodayWeightAdapter(val clickListener: TodayWeightListener) : ListAdapter<TodayWeight, TodayWeightAdapter.ViewHolder>(TodayWeightDiffCallback()) {
 
     class ViewHolder private constructor(val binding: WeightItemViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: TodayWeight) {
+        fun bind(item: TodayWeight, clickListener: TodayWeightListener) {
             binding.weightItem = item
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
 
@@ -36,12 +35,12 @@ class TodayWeightAdapter : ListAdapter<TodayWeight, TodayWeightAdapter.ViewHolde
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position)
-        holder.bind(item)
+        holder.bind(getItem(position), clickListener)
     }
 }
 
 class TodayWeightDiffCallback: DiffUtil.ItemCallback<TodayWeight>() {
+
     override fun areItemsTheSame(oldItem: TodayWeight, newItem: TodayWeight): Boolean {
         return oldItem.id == newItem.id
     }
@@ -49,5 +48,8 @@ class TodayWeightDiffCallback: DiffUtil.ItemCallback<TodayWeight>() {
     override fun areContentsTheSame(oldItem: TodayWeight, newItem: TodayWeight): Boolean {
         return oldItem == newItem
     }
+}
 
+class TodayWeightListener(val clickListener: (id: Long) -> Unit) {
+    fun onClick(weight: TodayWeight) = clickListener(weight.id)
 }

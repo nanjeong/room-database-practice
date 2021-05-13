@@ -1,4 +1,4 @@
-package com.example.myapplicationtracker
+package com.example.myapplicationtracker.weighttracker
 
 import android.app.Application
 import androidx.lifecycle.*
@@ -14,7 +14,7 @@ class TodayWeightViewModel(
 ) : AndroidViewModel(application) {
 
     var inputWeight = MutableLiveData<String>()
-    private val todayWeight = MutableLiveData<TodayWeight>()
+    private val todayWeight = MutableLiveData<TodayWeight?>()
 
     init {
         initializeTodayWeight()
@@ -74,4 +74,16 @@ class TodayWeightViewModel(
     }
 
     val weights = database.getAllWeight()
+
+    private val _navigationToDetail = MutableLiveData<Long?>()
+    val navigationToDetail
+        get() = _navigationToDetail
+
+    fun onSomedayWeightClicked(id: Long) {
+        _navigationToDetail.value = id
+    }
+
+    fun onSomedayWeightNavigated() {
+        _navigationToDetail.value = null
+    }
 }

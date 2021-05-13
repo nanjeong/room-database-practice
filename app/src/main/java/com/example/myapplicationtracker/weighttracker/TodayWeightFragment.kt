@@ -1,4 +1,4 @@
-package com.example.myapplicationtracker
+package com.example.myapplicationtracker.weighttracker
 
 import android.content.Context
 import android.os.Bundle
@@ -6,10 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.myapplicationtracker.R
+import com.example.myapplicationtracker.TodayWeightAdapter
+import com.example.myapplicationtracker.TodayWeightListener
 import com.example.myapplicationtracker.databinding.FragmentTodayWeightTrackerBinding
 import com.example.myapplicationtracker.db.TodayDatabase
 
@@ -36,7 +41,9 @@ class TodayWeightFragment : Fragment() {
 
         binding.todayWeightViewModel = todayWeightViewModel
 
-        val adapter = TodayWeightAdapter()
+        val adapter = TodayWeightAdapter(TodayWeightListener { weightId ->
+            todayWeightViewModel.onSomedayWeightClicked(weightId)
+        })
         binding.weightList.adapter = adapter
 
         todayWeightViewModel.weights.observe(viewLifecycleOwner, Observer {
@@ -54,6 +61,13 @@ class TodayWeightFragment : Fragment() {
             imm.hideSoftInputFromWindow(view?.windowToken, 0)
             it.clearFocus()
         }
+
+        todayWeightViewModel.navigationToDetail.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                this.findNavController().navigate(TodayWeightFragmentDirections.actionTodayWeightFragmentToDetailFragment(it))
+                todayWeightViewModel.onSomedayWeightNavigated()
+            }
+        })
 
         return binding.root
     }

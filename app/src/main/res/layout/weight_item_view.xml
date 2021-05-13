@@ -7,11 +7,15 @@
         <variable
             name="weightItem"
             type="com.example.myapplicationtracker.db.TodayWeight" />
+        <variable
+            name="clickListener"
+            type="com.example.myapplicationtracker.TodayWeightListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onClick(weightItem)}">
 
         <TextView
             android:id="@+id/weight"
